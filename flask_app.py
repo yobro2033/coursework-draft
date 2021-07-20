@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 import sqlite3
 import os
-from passlib.hash import sha256_crypt
 from markupsafe import escape
 from datetime import timedelta
 
