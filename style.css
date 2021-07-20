@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@500&family=Nanum+Gothic+Coding:wght@700&family=Titillium+Web:wght@300&display=swap');
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html{
+  font-size: 15px;
+  font-family: 'Nanum Gothic Coding', Arial, monospace;
+}
+
+@import url("https://rsms.me/inter/inter.css");
+:root {
+  --color-light: white;
+  --color-dark: #212121;
+  --color-signal: #fab700;
+  --color-background: var(--color-light);
+  --color-text: var(--color-dark);
+  --color-accent: var(--color-signal);
+  --size-bezel: .5rem;
+  --size-radius: 4px;
+  line-height: 1.4;
+  font-family: "Inter", sans-serif;
+  font-size: calc(.6rem + .4vw);
+  color: var(--color-text);
+  background: linear-gradient(-45deg, #FF6200, #FD7F2C, #FD9346, #FDA766, #FDB777);
+  background-size: 400% 400%;
+  position: relative;
+  animation: change 10s ease-in-out infinite;
+  font-weight: 300;
+  padding: 0 calc(var(--size-bezel) * 3);
+}
+
+h1, h2, h3, h4 {
+  font-weight: 900;
+}
+
+mark {
+  font-family: 'Nanum Gothic Coding', Arial, monospace;
+}
+
+section{
+  width: 100%;
+  height: 100vh;
+  color: #fff;
+  background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
+  background-size: 400% 400%;
+  position: relative;
+  animation: change 10s ease-in-out infinite;
+}
+
+form{
+  font-family: 'Nanum Gothic Coding', monospace;
+  font-size: 10rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 5rem 10rem;
+  border-collapse: separate;
+  border-radius: fit-content;
+  background: linear-gradient(-45deg, #E73C7E, #23A6D5);
+  padding: 50px;
+  -webkit-border-radius: 30px; /* Saf3-4, iOS 1-3.2, Android <e;1.6 */
+  -moz-border-radius: 30px; /* FF1-3.6 */
+  border-radius: 30px; /* Opera 10.5, IE9, Saf5, Chrome, FF4, iOS 4, Android 2.1+ */
+}
+
+@keyframes change {
+  0%{
+    background-position: 0 50%;
+  }
+  50%{
+    background-position: 100% 50%;
+  }
+  100%{
+    background-position: 0 50%;
+  }
+}
+
+mark {
+  background: var(--color-accent);
+  color: var(--color-text);
+  font-weight: bold;
+  padding: 0 0.2em;
+}
+
+.card {
+  background: var(--color-background);
+  padding: calc(4 * var(--size-bezel));
+  margin-top: calc(4 * var(--size-bezel));
+  border-radius: var(--size-radius);
+  border: 3px solid var(--color-shadow, currentColor);
+  box-shadow: 0.5rem 0.5rem 0 var(--color-shadow, currentColor);
+  position: relative;
+  top: 50%;
+  left: 50%;
+}
+
+background: var(--color-accent);
+  color: var(--color-text);
+  font-weight: bold;
+  padding: 0 0.2em;
+}
+
+.card {
+  background: var(--color-background);
+  padding: calc(4 * var(--size-bezel));
+  margin-top: calc(4 * var(--size-bezel));
+  border-radius: var(--size-radius);
+  border: 3px solid var(--color-shadow, currentColor);
+  box-shadow: 0.5rem 0.5rem 0 var(--color-shadow, currentColor);
+  position: relative;
+  top: 50%;
+  left: 50%;
+}
+
+.card *:first-child {
+  margin-top: 0;
+}
+
+.l-design-widht {
+  max-width: 40rem;
+  padding: 1rem;
+}
+
+.input {
+  position: relative;
+}
+.input__label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: calc(var(--size-bezel) * 0.75) calc(var(--size-bezel) * .5);
+  margin: calc(var(--size-bezel) * 0.75 + 3px) calc(var(--size-bezel) * .5);
+  background: pink;
+  white-space: nowrap;
+  transform: translate(0, 0);
+  transform-origin: 0 0;
+  background: var(--color-background);
+  transition: transform 120ms ease-in;
+  font-weight: bold;
+  line-height: 1.2;
+}
+.input__field {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  border: 3px solid currentColor;
+  padding: calc(var(--size-bezel) * 1.5) var(--size-bezel);
+  color: currentColor;
+  background: transparent;
+  border-radius: var(--size-radius);
+}
+.input__field:not(:-moz-placeholder-shown) + .input__label {
+  transform: translate(0.25rem, -65%) scale(0.8);
+  color: var(--color-accent);
+}
+.input__field:not(:-ms-input-placeholder) + .input__label {
+  transform: translate(0.25rem, -65%) scale(0.8);
+  color: var(--color-accent);
+}
+.input__field:focus + .input__label, .input__field:not(:placeholder-shown) + .input__label {
+  transform: translate(0.25rem, -65%) scale(0.8);
+  color: var(--color-accent);
+}
+
+.button-group {
+  margin-top: calc(var(--size-bezel) * 2.5);
+}
+
+button {
+  color: currentColor;
+  padding: var(--size-bezel) calc(var(--size-bezel) * 2);
+  background: var(--color-accent);
+  border: none;
+  border-radius: var(--size-radius);
+  font-weight: 900;
+}
+button[type=reset] {
+  background: var(--color-background);
+  font-weight: 200;
+}
+
+button + button {
+  margin-left: calc(var(--size-bezel) * 2);
+}
+
+.icon {
+  display: inline-block;
+  width: 2em;
+  height: 1.2em;
+  margin-right: 0em;
+}
+
+.hidden {
+  display: none;
+}
