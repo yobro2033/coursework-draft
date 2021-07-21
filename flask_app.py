@@ -6,29 +6,34 @@ from datetime import timedelta
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(16)
-app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=1)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=1)
+
 
 @app.route('/')
 def home():
-    return render_template('welcome.html')
+	return render_template('welcome.html')
+
 
 @app.route('/login')
 def login():
-    return render_template('login_form.html')
+	return render_template('login_form.html')
+
 
 @app.route('/signup')
 def signup():
-    return render_template('simple_form.html')
+	return render_template('simple_form.html')
+
 
 @app.route('/tos')
 def tos():
 	return render_template('termsofservice.html')
 
+
 @app.route('/create')
 def create():
 	con = sqlite3.connect('login.db')
 	cur = con.cursor()
-	cur.execute(	"""	CREATE TABLE Users(
+	cur.execute("""	CREATE TABLE Users(
 					Username VARCHAR(50) NOT NULL PRIMARY KEY,
 					Password VARCHAR(20) NOT NULL
 						  )
@@ -36,28 +41,30 @@ def create():
 	con.commit()
 	return 'CREATE'
 
+
 @app.route('/insert', methods=['POST'])
 def hello():
-    try:
-      con = sqlite3.connect('login.db')
-      cur = con.cursor()
-      username = request.form['username']
-      password = request.form['password']
-      if email.strip() == "" or password.strip() == "":
-        return {'success': False, 'error': "You have not filled in all of the fields."}
-      checkPassword = passwordValidator(password)
-      if checkpassword['success'] == False:
-        print(checkpassword['error'])
-        return {'success': False}
-      cursor.execute("SELECT Username FROM Users WHERE Username = ?", (username,))
-      data = cursor.fetchall()
-      while len(data) != 0:
-        return {'success': False, 'error': "This username already exists."}
-      cur.execute("INSERT INTO Users (Username, Password) VALUES (?,?)",(username,password))
-      con.commit()
-      return {'success': True, 'error': "Thank for registering account with us!"}
-    except Exception as e:
-		    return {'success': False, 'error': type(e).___name___}
+	try:
+		con = sqlite3.connect('login.db')
+		cur = con.cursor()
+		username = request.form['username']
+		password = request.form['password']
+		if email.strip() == "" or password.strip() == "":
+			return {'success': False, 'error': "You have not filled in all of the fields."}
+		checkPassword = passwordValidator(password)
+		if checkpassword['success'] == False:
+			print(checkpassword['error'])
+			return {'success': False}
+		cursor.execute("SELECT Username FROM Users WHERE Username = ?", (username,))
+		data = cursor.fetchall()
+		while len(data) != 0:
+			return {'success': False, 'error': "This username already exists."}
+		cur.execute("INSERT INTO Users (Username, Password) VALUES (?,?)", (username, password))
+		con.commit()
+		return {'success': True, 'error': "Thank for registering account with us!"}
+	except Exception as e:
+		return {'success': False, 'error': type(e).___name___}
+
 
 def passwordValidator(password):
 	if len(password) >= 8:
@@ -101,8 +108,8 @@ def passwordValidator(password):
 		pass
 	else:
 		return {'success': False, 'error': "Your password must have at least 1 lower-case."}
-	
-	
+
+
 @app.route('/select')
 def select():
 	con = sqlite3.connect('login.db')
@@ -110,12 +117,13 @@ def select():
 	cur.execute("SELECT * FROM Users")
 	return str(cur.fetchall())
 
+
 @app.route('/verify', methods=['POST'])
 def verify():
 	con = sqlite3.connect('login.db')
 	cur = con.cursor()
-	cur.execute(	"SELECT * FROM Users WHERE Username=? AND Password=?",
-    		       (request.form['username'],request.form['password']))
+	cur.execute("SELECT * FROM Users WHERE Username=? AND Password=?",
+				(request.form['username'], request.form['password']))
 	result = cur.fetchall()
 	if len(result) == 0:
 		return {'success': False, 'error': "The information you entered is incorrect!"}
@@ -124,13 +132,15 @@ def verify():
 		session['username'] = request.form['username']
 		return {'success': True, 'error': "Welcome!"}
 
+
 @app.route('/un')
 def un():
 	if 'username' in session:
 		return 'Logged in as %s' % escape(session['username'])
 	return 'You are not logged in'
 
+
 @app.route('/logout')
 def logout():
-    session.pop('username', None)
-    return redirect(url_for('un'))
+	session.pop('username', None)
+	return redirect(url_for('un'))
