@@ -21,7 +21,7 @@ def login():
 
 @app.route('/signup')
 def signup():
-	return render_template('simple_form.html')
+	return render_template('signup_form.html')
 
 
 @app.route('/tos')
