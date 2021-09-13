@@ -1,0 +1,1 @@
+[{"Product link: ": ["https://groceries.morrisons.com/products/ryvita-sweet-chilli-thins-112649011"], "Product name: ": ["Ryvita Sweet Chilli Thins"], "Image": ["https://groceries.morrisons.com/productImages/112/112649011_0_150x150.jpg?identifier=f2a82194623674801e8bac85d5950a24"], "Price: ": ["\u00a31.00"], "Price per unit: ": ["80p per 100g"]}]
