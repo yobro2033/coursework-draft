@@ -49,7 +49,7 @@ def hello():
 		cur = con.cursor()
 		username = request.form['username']
 		password = request.form['password']
-		if email.strip() == "" or password.strip() == "":
+		if username.strip() == "" or password.strip() == "":
 			return {'success': False, 'error': "You have not filled in all of the fields."}
 		checkPassword = passwordValidator(password)
 		if checkpassword['success'] == False:
