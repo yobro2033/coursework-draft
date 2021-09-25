@@ -51,10 +51,6 @@ def hello():
 		password = request.form['password']
 		if username.strip() == "" or password.strip() == "":
 			return {'success': False, 'error': "You have not filled in all of the fields."}
-		checkPassword = passwordValidator(password)
-		if checkpassword['success'] == False:
-			print(checkpassword['error'])
-			return {'success': False}
 		cursor.execute("SELECT Username FROM Users WHERE Username = ?", (username,))
 		data = cursor.fetchall()
 		while len(data) != 0:
