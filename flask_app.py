@@ -51,7 +51,7 @@ def hello():
 		password = request.form['password']
 		if username.strip() == "" or password.strip() == "":
 			return {'success': False, 'error': "You have not filled in all of the fields."}
-		cursor.execute("SELECT Username FROM Users WHERE Username = ?", (username,))
+		cur.execute("SELECT Username FROM Users WHERE Username = ?", (username,))
 		data = cursor.fetchall()
 		while len(data) != 0:
 			return {'success': False, 'error': "This username already exists."}
