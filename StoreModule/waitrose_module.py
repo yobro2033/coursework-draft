@@ -26,5 +26,15 @@ if responseCode == "<Response [200]>":
         print(productImage)
         print("Price: ", productPrice)
         print("Price per unit: ", productUnitPrice)
+	waitrose_table_data = []
+        waitrose_table_data.append({
+            'Product link: ': [productLink],
+            'Product name: ': [productName],
+            'Image': [productImage],
+            'Price: ': [productPrice],
+            'Price per unit: ': [productUnitPrice]
+        })
+        with open('w_data.txt', 'w') as outfile:
+            json.dump(waitrose_table_data, outfile)
 else:
 	print("Please try again later!")
