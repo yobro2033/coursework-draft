@@ -1,142 +1,93 @@
-from flask import Flask, render_template, request, session, redirect, url_for
-import sqlite3
-import os
-from markupsafe import escape
-from datetime import timedelta
+from flask import Flask, render_template, request, session, redirect, url_for, flash
+import pyrebase, webbrowser, requests, json, os, datetime
+from threading import Timer
+from urllib.error import HTTPError
+from bs4 import BeautifulSoup as soup
+from werkzeug.utils import html
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.urandom(16)
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=1)
-
+app.secret_key = os.urandom(24)
+firebaseConfig = {
+    "apiKey": "AIzaSyBeOr7f2Il4mMNL2WHoKE7CcxuNKu2LS7I",
+    "authDomain": "pricechecker-bb931.firebaseapp.com",
+    "projectId": "pricechecker-bb931",
+    "storageBucket": "pricechecker-bb931.appspot.com",
+    "messagingSenderId": "377615563114",
+    "appId": "1:377615563114:web:e3e44e1063cf23a8018d13",
+    "measurementId": "G-726Y8YKFDE",
+    "databaseURL": "localhost"
+  }
+firebase = pyrebase.initialize_app(firebaseConfig)
+auth = firebase.auth()
+db = firebase.database()
+status = ""
 
 @app.route('/')
 def home():
 	return render_template('welcome.html')
 
-
 @app.route('/login')
-def login():
+def logindash():
 	return render_template('login_form.html')
 
-
 @app.route('/signup')
-def signup():
+def signupdash():
 	return render_template('signup_form.html')
-
 
 @app.route('/tos')
 def tos():
 	return render_template('termsofservice.html')
 
-
-@app.route('/create')
-def create():
-	con = sqlite3.connect('login.db')
-	cur = con.cursor()
-	cur.execute("""	CREATE TABLE Users(
-					Username VARCHAR(50) NOT NULL PRIMARY KEY,
-					Password VARCHAR(20) NOT NULL
-						  )
-			""")
-	con.commit()
-	return 'CREATE'
-
+@app.route('/dashboard')
+def dashboard():
+    try:
+        print(session['usr'])
+        return render_template("dashboard.html")
+    except KeyError:
+        return redirect(url_for('logindash'))
 
 @app.route('/insert', methods=['POST'])
-def hello():
-	try:
-		con = sqlite3.connect('login.db')
-		cur = con.cursor()
-		username = request.form['username']
-		password = request.form['password']
-		if username.strip() == "" or password.strip() == "":
-			return {'success': False, 'error': "You have not filled in all of the fields."}
-		cur.execute("SELECT Username FROM Users WHERE Username = ?", (username,))
-		data = cur.fetchall()
-		while len(data) != 0:
-			return {'success': False, 'error': "This username already exists."}
-		cur.execute("INSERT INTO Users (Username, Password) VALUES (?,?)", (username, password))
-		con.commit()
-		return {'success': True, 'error': "Thank for registering account with us!"}
-	except Exception as e:
-		return {'success': False, 'error': type(e).___name___}
+def signup():
+    error = None
+    try:
+        email = request.form['email']
+        password = request.form['password']
+        status = auth.create_user_with_email_and_password(email, password)
+        flash('Thank you for registering an account with us!')
+        return redirect(url_for('logindash'))
+    except requests.exceptions.HTTPError as e:
+        error_json = e.args[1]
+        error = json.loads(error_json)['error']['message']
+        error_code = json.loads(error_json)['error']['code']
+        return render_template('signup_form.html', error=error)
 
-
-def passwordValidator(password):
-	if len(password) >= 8:
-		pass
-	else:
-		return {'success': False, 'error': "Your password must have at least 8 characters."}
-	symbols = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "+", "=", "?", "/"]
-	for symbol in symbols:
-		if symbol in password:
-			break
-	if symbol in password:
-		pass
-	else:
-		return {'success': False, 'error': "Your password must contain at least 1 special character."}
-	for char in list(password):
-		try:
-			int(char)
-			hashNumber = True
-			break
-		except:
-			pass
-	if hashNumber == True:
-		pass
-	else:
-		return {'success': False, 'error': "Your password must have at least 1 number."}
-	capitalChar = False
-	for char in list(password):
-		if char.isupper() == True:
-			capitalChar = True
-			break
-	if capitalChar == True:
-		pass
-	else:
-		return {'success': False, 'error': "Your password must have at least 1 upper-case."}
-	lowCase = False
-	for char in list(password):
-		if char.islower() == True:
-			lowCase = True
-			break
-	if lowCase == True:
-		pass
-	else:
-		return {'success': False, 'error': "Your password must have at least 1 lower-case."}
-
-
-@app.route('/select')
-def select():
-	con = sqlite3.connect('login.db')
-	cur = con.cursor()
-	cur.execute("SELECT * FROM Users")
-	return str(cur.fetchall())
-
-
-@app.route('/verify', methods=['POST'])
+@app.route('/verify', methods=['POST', 'GET'])
 def verify():
-	con = sqlite3.connect('login.db')
-	cur = con.cursor()
-	cur.execute("SELECT * FROM Users WHERE Username=? AND Password=?",
-				(request.form['username'], request.form['password']))
-	result = cur.fetchall()
-	if len(result) == 0:
-		return {'success': False, 'error': "The information you entered is incorrect!"}
-	else:
-		session.permanent = True
-		session['username'] = request.form['username']
-		return {'success': True, 'error': "Welcome!"}
-
-
-@app.route('/un')
-def un():
-	if 'username' in session:
-		return 'Logged in as %s' % escape(session['username'])
-	return 'You are not logged in'
-
+    error = ""
+    try:
+        print(session['usr'])
+        return redirect(url_for('dashboard'))
+    except KeyError:
+        if request.method == "POST":
+            email = request.form["email"]
+            password = request.form["password"]
+            error = None
+            try:
+                user = auth.sign_in_with_email_and_password(email, password)
+                user = auth.refresh(user['refreshToken'])
+                user_id = user['idToken']
+                session['usr'] = user_id
+                return redirect(url_for('dashboard'))
+            except requests.exceptions.HTTPError as e:
+                error_json = e.args[1]
+                error = json.loads(error_json)['error']['message']
+                error_code = json.loads(error_json)['error']['code']
+        return render_template("login_form.html", error=error)
 
 @app.route('/logout')
 def logout():
-	session.pop('username', None)
-	return redirect(url_for('un'))
+    try:
+        auth.current_user = None
+    except KeyError:
+        pass
+    return redirect(url_for('home'))
