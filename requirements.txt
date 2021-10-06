@@ -2,4 +2,3 @@ gunicorn
 Flask
 pyrebase
 bs4
-werkzeug.utils
