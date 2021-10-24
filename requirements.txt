@@ -1,4 +1,0 @@
-gunicorn
-Flask
-pyrebase
-bs4
