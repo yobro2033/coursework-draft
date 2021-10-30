@@ -285,12 +285,3 @@ def formatList(items):
         except:
             pass
     return items
-
-#Auto open browser as soon as users run the program
-def open_browser():
-      webbrowser.open_new('http://127.0.0.1:5000/')
-
-#Attempt to run the program, open the browser
-if __name__ == "__main__":
-      Timer(1, open_browser).start();
-      app.run(port=5000)
