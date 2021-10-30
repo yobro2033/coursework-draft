@@ -186,7 +186,7 @@ def removeWishlist():
     currentUser = str(currentUser)
     try:
         productName = request.form['name']
-        with open('wishlist.json') as json_data:
+        with open('app.json') as json_data:
             datas = json.load(json_data)
             elements = datas['wishlist']
             for data in elements:
@@ -197,7 +197,7 @@ def removeWishlist():
                 else:
                     pass
         #write the list back into json file
-        with open('wishlist.json','w') as file:
+        with open('app.json','w') as file:
             json.dump(datas, file, indent = 4)
         return redirect(url_for('displayWL'))
     except Exception as e:
