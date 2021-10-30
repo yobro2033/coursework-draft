@@ -177,8 +177,8 @@ def displayWL():
         else:
             raise KeyError
     except KeyError as e:
-	print(e)
-        return render_template('welcome.html')
+	   print(e)
+	   return render_template('welcome.html')
 
 #remove wishlist
 @app.route('/removeWishlist', methods=["POST"])
