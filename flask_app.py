@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, url_for, flash
-import pyrebase, webbrowser, requests, json, os, datetime, re
+import pyrebase, webbrowser, requests, json, os, re
 from threading import Timer
-from urllib.error import HTTPError
-from bs4 import BeautifulSoup as soup
 from werkzeug.utils import html
 from modules.iceland import Iceland
 from modules.morrisons import Morrisons
@@ -17,6 +15,8 @@ from offers.tescooffers import TescoOffer
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
+
+#Firebase config, get the config from firebase's dashboard setting
 firebaseConfig = {
     "apiKey": "AIzaSyBeOr7f2Il4mMNL2WHoKE7CcxuNKu2LS7I",
     "authDomain": "pricechecker-bb931.firebaseapp.com",
@@ -37,6 +37,7 @@ currentUser = ""
 @app.route('/')
 def home():
     try:
+        #use to check user's session valid
         if session['usr'] != None:
             return render_template("dashboard.html")
         else: 
@@ -91,22 +92,24 @@ def signup():
     except requests.exceptions.HTTPError as e:
         error_json = e.args[1]
         error = json.loads(error_json)['error']['message']
-        error_code = json.loads(error_json)['error']['code']
-        return render_template('signup_form.html', error=error)
+        error_code = json.loads(error_json)['error']['code'] #get error code
+        return render_template('signup_form.html', error=error) #Redirect back to the signup page and display error getting from firebase's api
 
 @app.route('/verify', methods=['POST', 'GET'])
 def verify():
     error = ""
     global currentUser
     if request.method == "POST":
+        #request the info sent through POST method from the form
         email = request.form["email"]
         password = request.form["password"]
         currentUser = email
         error = None
         try:
             user = authe.sign_in_with_email_and_password(email, password) #Using pyrebase REST API
-            user = authe.refresh(user['refreshToken'])
+            user = authe.refresh(user['refreshToken']) #get the token
             user_id = user['idToken']
+            #Assign the user's session
             session['usr'] = user_id
             return redirect(url_for('dashboard'))
         except requests.exceptions.HTTPError as e:
@@ -121,8 +124,11 @@ def searchmodule():
     productInput = removeSC(productInput)
     filterOption = request.form["filterOption"]
     if productInput != None and filterOption != None:
-        items = getItems(productInput, filterOption)
+        #execute the get items function to retrieve the product scraped
+        items = getItems(productInput)
+        #change the price into float to sort the list
         items = formatList(items)
+        #sort the price with the given criteria
         if filterOption == "lowest":
             items = sorted(items,key=lambda x: x['price'])
         else:
@@ -131,17 +137,19 @@ def searchmodule():
     else:
         pass
 
-#Save wishlist to json file
+#Save wishlist to json file and redirect to display page
 @app.route('/addWishlist', methods=["POST"])
 def wishlist():
-    wishlistObject = ""
     email = currentUser
+    addWishlist = ""
     try:
+        #request the value from form through method post
         name = request.form['productName']
         url = request.form['productURL']
         store = request.form['productStore']
         image = request.form['productImage']
-        addWishlist = addNew(email, url, name, store, image)
+        price = request.form['productPrice']
+        addWishlist = addNew(email, url, name, store, image, price)
         return redirect(url_for('displayWL'))
     except Exception as e:
         print(e)
@@ -152,10 +160,21 @@ def wishlist():
 @app.route('/wishlist')
 def displayWL():
     try:
+        global currentUser
         if session['usr'] != None:
-            items = displayWishlist(currentUser)
-            return render_template("wishlist.html", items=items)
-        else: 
+            items = displayWishlist(currentUser) #read the json file to retrieve the file
+            totalItems = []
+            counts = 0 #count total items in the list
+            #sum the total price for items in current shopping list
+            for item in items:
+                item['price'] = float(item['price'])
+                newItem = item['price']
+                totalItems.append(newItem)
+                counts = counts + 1
+            priceItems = sum(totalItems)
+            priceItems = str(round(priceItems,2)) #ensure no encountered error in price
+            return render_template("wishlist.html", items=items, priceItems=priceItems, counts=counts)
+        else:
             raise KeyError
     except KeyError:
         return render_template('welcome.html')
@@ -171,10 +190,13 @@ def removeWishlist():
             datas = json.load(json_data)
             elements = datas['wishlist']
             for data in elements:
+                #change the email to "removed" if the user wished to remove item from wishlist
                 if data['email'] == currentUser and data['name'] == productName:
+                    #changed to "removed" will prevent the program from displaying this item as the email is invalid
                     data['email'] = 'removed'
                 else:
                     pass
+        #write the list back into json file
         with open('wishlist.json','w') as file:
             json.dump(datas, file, indent = 4)
         return redirect(url_for('displayWL'))
@@ -206,12 +228,12 @@ def logout():
         return render_template('welcome.html')
 
 #Collect the items with input product by using the module from modules folder then short with user's option
-def getItems(productInput,filterOption):
+def getItems(productInput):
     #Get the returned list items found from 4 modules imported
-    icelandObject = Iceland(productInput,filterOption)
-    morrisonsObject = Morrisons(productInput,filterOption)
-    sainsburyObject = Sainsbury(productInput,filterOption)
-    tescoObject = Tesco(productInput,filterOption)
+    icelandObject = Iceland(productInput)
+    morrisonsObject = Morrisons(productInput)
+    sainsburyObject = Sainsbury(productInput)
+    tescoObject = Tesco(productInput)
 
     #It will then add it into 1 total list
     totalItems = []
@@ -249,7 +271,7 @@ def getOffers():
 
     return totalItems
 
-# Remove special characters to prevent crashes
+#Remove special characters to prevent crashes
 def removeSC(productInput):
     productInput = re.sub('[^a-zA-Z.\d\s]', '', productInput) #[^a-zA-Z.\d\s] means remove all special character apart from space
     return productInput
@@ -262,3 +284,12 @@ def formatList(items):
         except:
             pass
     return items
+
+#Auto open browser as soon as users run the program
+def open_browser():
+      webbrowser.open_new('http://127.0.0.1:5000/')
+
+#Attempt to run the program, open the browser
+if __name__ == "__main__":
+      Timer(1, open_browser).start();
+      app.run(port=5000)
