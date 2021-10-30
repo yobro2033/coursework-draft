@@ -176,7 +176,8 @@ def displayWL():
             return render_template("wishlist.html", items=items, priceItems=priceItems, counts=counts)
         else:
             raise KeyError
-    except KeyError:
+    except KeyError as e:
+	print(e)
         return render_template('welcome.html')
 
 #remove wishlist
