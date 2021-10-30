@@ -2,7 +2,7 @@ import json
 
 def displayWishlist(currentUser):
     currentUser = str(currentUser)
-    tests = open("./wishlist.json").read()
+    tests = open("./app.json").read()
     datas = json.loads(tests)
     hello = datas["wishlist"]
     wishlistdata = []
