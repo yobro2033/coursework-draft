@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block body %}
-<p><a href="http://pricechecker.herokuapp.com/"><img src="/static/image/logo.png" alt="logo" width=100 length=100></a> </p>
-<div style="position: absolute; top: 10; right: 10;"><button style="background-color: orangered; width: 80px; height: 70px" onclick="document.location.href = 'http://pricechecker.herokuapp.com/logout'"><img src="/static/image/signout.png" alt="logout" width="40" height="40" class="center"></button></div>
+<p><a href="https://pricechecker.herokuapp.com/"><img src="/static/image/logo.png" alt="logo" width=100 length=100></a> </p>
+<div style="position: absolute; top: 10; right: 10;"><button style="background-color: orangered; width: 80px; height: 70px" onclick="document.location.href = 'https://pricechecker.herokuapp.com/logout'"><img src="/static/image/signout.png" alt="logout" width="40" height="40" class="center"></button></div>
 <section class="modal-content animate">
    <div class="container">
         <h2 class="title-headline" style="text-align:center">Offers available</h2>
@@ -15,7 +15,7 @@
             <tr>
                 <th>{{item['store']}}</th>
                 <th width="400" height="104"><img src="{{item['image']}}" alt="{{item['title']}}" height="100%" style="text-align:center"></th>
-                <th><a href="{{item['link']}}">{{item['title']}}</a></th>
+                <th><a href="{{item['url']}}">{{item['title']}}</a></th>
             </tr>
             {% endfor %}
         </table>
