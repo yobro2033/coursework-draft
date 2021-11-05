@@ -1,7 +1,0 @@
-gunicorn
-Flask
-pyrebase4
-Werkzeug
-requests
-beautifulsoup4
-urllib3
