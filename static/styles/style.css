@@ -1,0 +1,122 @@
+body {
+	background: linear-gradient(-45deg, #f4cccc, #f9b9b9, #eab1b1, #ef8787, #d68d8d);
+	background-size: 400% 400%;
+	position: relative;
+	font-family: 'Courier New';
+	font-size: 18px;
+}
+.imgcontainer {
+	text-align: center;
+	margin: 24px 0 12px 0;
+	position: relative;
+}
+img.avatar {
+	width: 15%;
+	border-radius: 20%;
+}
+option {
+	position: relative;
+	font-family: 'Courier New';
+	font-size: 18px;
+}
+input[type=text],
+input[type=password] {
+	border-radius: 10px;
+	width: 100%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #ccc;
+	box-sizing: border-box;
+}
+div[class=card] {
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+	padding: 16px;
+	background-color: #F8F8F8;
+	max-width: 350px;
+	margin: auto;
+	text-align: center;
+	margin-bottom: 20px;
+	font-size: 13px;
+}
+#outer {
+    width:100%;
+    text-align: center;
+}
+.inner {
+    display: inline-block;
+}
+button {
+	font-family: 'Courier New';
+	font-size: 15px;
+	display: flex;
+	text-align: center;
+	background-color: #87CEEB;
+	border-radius: 12px;
+	color: black;
+	padding: 14px 20px;
+	margin: 0 auto;
+	border: none;
+	cursor: pointer;
+	width: 120px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+input [type=checkbox] {
+    font-family: 'Courier New';
+    color: black;
+    font-size: 15px;
+}
+#wishlisttable {
+	font-family: 'Courier New';
+	border-collapse: collapse;
+	width: 100%;
+}
+#wishlisttable td, #wishlisttable th {
+	border: 1px solid #ddd;
+	padding: 8px;
+}
+#wishlisttable tr:nth-child(even){
+	background-color: #f2f2f2;
+}
+#wishlisttable tr:hover {
+	background-color: #ddd;
+}
+#wishlisttable th {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: left;
+	background-color: #F8F8F8;
+	color: black;
+}
+.container {
+	padding: 16px;
+}
+.modal-content {
+	border-radius: 12px;
+	background: white;
+	margin: 5% auto 15% auto;
+	border: 1px solid #888;
+	width: 80%;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    overflow: auto;
+}
+.animate {
+	-webkit-animation: animatezoom 0.6s;
+	animation: animatezoom 0.6s
+}
+@-webkit-keyframes animatezoom {
+	from {
+		-webkit-transform: scale(0)
+	}
+	to {
+		-webkit-transform: scale(1)
+	}
+}
+@keyframes animatezoom {
+	from {
+		transform: scale(0)
+	}
+	to {
+		transform: scale(1)
+	}
+}
