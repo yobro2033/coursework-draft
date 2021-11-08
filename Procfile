@@ -1,2 +1,2 @@
-web: gunicorn flask_app:app --timeout 90
+web: gunicorn flask_app:app --timeout 30
 web:node index.js
