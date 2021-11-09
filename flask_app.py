@@ -2,8 +2,8 @@ from flask import Flask, render_template, request, session, redirect, url_for
 import pyrebase, webbrowser, requests, json, os, re
 from threading import Timer
 from werkzeug.utils import html
-from modules.iceland import Iceland
-from modules.morrisons import Morrisons
+#from modules.iceland import Iceland
+#from modules.morrisons import Morrisons
 from modules.sainsbury import Sainsbury
 from modules.tesco import Tesco
 #from modules.asda import Asda
@@ -11,7 +11,7 @@ from modules.tesco import Tesco
 from wishlist.wishlistAPI import addNew
 from wishlist.displaywishlist import displayWishlist
 #from offers.icelandoffers import IcelandOffer
-from offers.morrisonsoffers import MorrisonsOffer
+#from offers.morrisonsoffers import MorrisonsOffer
 from offers.sainsburysoffers import SainsburysOffer
 from offers.tescooffers import TescoOffer
 #from offers.asdaoffers import AsdaOffer
@@ -237,8 +237,8 @@ def logout():
 #Collect the items with input product by using the module from modules folder then short with user's option
 def getItems(productInput):
     #Get the returned list items found from 6 modules imported
-    icelandObject = Iceland(productInput)
-    morrisonsObject = Morrisons(productInput)
+#    icelandObject = Iceland(productInput)
+#    morrisonsObject = Morrisons(productInput)
     sainsburyObject = Sainsbury(productInput)
     tescoObject = Tesco(productInput)
 #    asdaObject = Asda(productInput)
@@ -246,10 +246,10 @@ def getItems(productInput):
 
     #It will then add it into 1 total list
     totalItems = []
-    if icelandObject != None:
-        totalItems.extend(icelandObject)
-    if morrisonsObject != None:
-        totalItems.extend(morrisonsObject)
+#    if icelandObject != None:
+#        totalItems.extend(icelandObject)
+#    if morrisonsObject != None:
+#        totalItems.extend(morrisonsObject)
     if sainsburyObject != None:
         totalItems.extend(sainsburyObject)
     if tescoObject != None: 
@@ -266,7 +266,7 @@ def getItems(productInput):
 #Collect offers available from e-commerce websites
 def getOffers():
 #    icelandOffer = IcelandOffer()
-    morrisonsOffer = MorrisonsOffer()
+#    morrisonsOffer = MorrisonsOffer()
     sainsburysOffer = SainsburysOffer()
     tescoOffer = TescoOffer()
 #    asdaOffer = AsdaOffer()
@@ -275,8 +275,8 @@ def getOffers():
     totalItems = []
 #    if icelandOffer != None:
 #        totalItems.extend(icelandOffer)
-    if morrisonsOffer != None:
-        totalItems.extend(morrisonsOffer)
+#    if morrisonsOffer != None:
+#        totalItems.extend(morrisonsOffer)
     if sainsburysOffer != None:
         totalItems.extend(sainsburysOffer)
     if tescoOffer != None:
