@@ -6,11 +6,11 @@ from modules.iceland import Iceland
 from modules.morrisons import Morrisons
 from modules.sainsbury import Sainsbury
 from modules.tesco import Tesco
-from modules.asda import Asda
+#from modules.asda import Asda
 #from modules.ocado import Ocado
 from wishlist.wishlistAPI import addNew
 from wishlist.displaywishlist import displayWishlist
-from offers.icelandoffers import IcelandOffer
+#from offers.icelandoffers import IcelandOffer
 from offers.morrisonsoffers import MorrisonsOffer
 from offers.sainsburysoffers import SainsburysOffer
 from offers.tescooffers import TescoOffer
@@ -241,8 +241,8 @@ def getItems(productInput):
     morrisonsObject = Morrisons(productInput)
     sainsburyObject = Sainsbury(productInput)
     tescoObject = Tesco(productInput)
-    asdaObject = Asda(productInput)
-    ocadoObject = Ocado(productInput)
+#    asdaObject = Asda(productInput)
+#    ocadoObject = Ocado(productInput)
 
     #It will then add it into 1 total list
     totalItems = []
@@ -254,8 +254,8 @@ def getItems(productInput):
         totalItems.extend(sainsburyObject)
     if tescoObject != None: 
         totalItems.extend(tescoObject)
-    if asdaObject != None:
-        totalItems.extend(asdaObject)
+#    if asdaObject != None:
+#        totalItems.extend(asdaObject)
 #    if ocadoObject != None:
 #        totalItems.extend(ocadoObject)
     else:
@@ -265,7 +265,7 @@ def getItems(productInput):
 
 #Collect offers available from e-commerce websites
 def getOffers():
-    icelandOffer = IcelandOffer()
+#    icelandOffer = IcelandOffer()
     morrisonsOffer = MorrisonsOffer()
     sainsburysOffer = SainsburysOffer()
     tescoOffer = TescoOffer()
@@ -273,8 +273,8 @@ def getOffers():
     #ocadoOffer = OcadoOffer()
 
     totalItems = []
-    if icelandOffer != None:
-        totalItems.extend(icelandOffer)
+#    if icelandOffer != None:
+#        totalItems.extend(icelandOffer)
     if morrisonsOffer != None:
         totalItems.extend(morrisonsOffer)
     if sainsburysOffer != None:
